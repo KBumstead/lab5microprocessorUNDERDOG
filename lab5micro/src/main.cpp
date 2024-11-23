@@ -42,20 +42,14 @@ int main()
   initI2C();
   init_max7129();
 
-
   Serial.begin(9600);  // Initialize serial communication
   sei(); //to enable interrupt 
 
   while (1)
   {
-  send_max7129(0x01, 0b00000000); // Column 1
-    send_max7129(0x02, 0b11100000); // Column 2
-    send_max7129(0x03, 0b11101100); // Column 3
-    send_max7129(0x04, 0b00000100); // Column 4
-    send_max7129(0x05, 0b00000100); // Column 5
-    send_max7129(0x06, 0b11101100); // Column 6
-    send_max7129(0x07, 0b11100000); // Column 7
-    send_max7129(0x08, 0b00000000); // Column 8
+      max7219_display_pattern();
+      max7219_display_sad_pattern();
+      _delay_ms(1000);
   }
 
   
