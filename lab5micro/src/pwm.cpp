@@ -20,13 +20,12 @@ void initPWM()
 
 void setBuzzerFrequency(uint16_t frequency)
 {
+    //Setting the frequency using formula f = clock frequency / (prescaler * (ICR + 1))
+    //Rearrange for ICR = (Clock frequency / (Prescaler * f)) - 1
     uint16_t topValue = (16000000 / (8 * frequency)) - 1;  // 16 MHz clock, prescaler 8
-    
-    // Set the ICR3 value (this controls the period of the PWM)
+
     ICR3 = topValue;
-    
-    // Set the OCR3A value (this controls the duty cycle)
-    OCR3A = topValue / 2;  // 50% duty cycle (this can be adjusted)
+    OCR3A = topValue / 2;
 
     Serial.print("Frequency: ");
     Serial.println(frequency);
@@ -34,33 +33,22 @@ void setBuzzerFrequency(uint16_t frequency)
     Serial.println(ICR3);  // Print the calculated ICR3 value
 }
 
-
 void buzzerChirp()
 {
     //How to produce the chirping sound effect
 
     // Sweep frequency from 1000 Hz to 5000 Hz and back down
-    for (uint16_t freq = 1000; freq <= 5000; freq += 50) 
-    {
-        Serial.println("Loop Start"); 
+    for (uint16_t freq = 1000; freq <= 5000; freq += 100) 
+    { 
         setBuzzerFrequency(freq); // Set the buzzer frequency
-        delay(10);    
-        Serial.println("Loop Done");         // Small delay for smooth frequency change
+        _delay_ms(10);
     }
 
     // Sweep frequency from 5000 Hz to 1000 Hz
-    for (uint16_t freq = 5000; freq >= 1000; freq -= 50) 
+    for (uint16_t freq = 5000; freq >= 1000; freq -= 100) 
     {
         setBuzzerFrequency(freq); // Set the buzzer frequency
-        Serial.print("Frequency Value: ");
-        Serial.println(freq);
-        delay(10);                // Small delay for smooth frequency change
+        _delay_ms(10);
+
     }
-}
-void loopTest()
-{
-    Serial.println("Starting Buzzer Chirp");  // Add a print to confirm loop
-    buzzerChirp();  // Call the buzzer chirp function
-    Serial.println("Buzzer Chirp Complete");  // Print after chirp completes
-    delay(1000);  // Optional: delay before starting the next chirp to avoid overloading the output
 }
