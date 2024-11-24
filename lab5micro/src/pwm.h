@@ -12,6 +12,6 @@
 void initPWM();
 void buzzerChirp();
 void setBuzzerFrequency(uint16_t frequency);
-void loopTest();
+void stopBuzzerSound();
 
 #endif // PWM_H

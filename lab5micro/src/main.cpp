@@ -82,30 +82,52 @@ int main()
   float roll = 0;
   float pitch = 0;
 
+  startI2C_Trans(SLA);
+  write(PWR_MGMT_1); // address on SLA for Power Management
+  write(wakeup);   // send data to Wake up from sleep mode
+  stopI2C_Trans();
+
+  startI2C_Trans(SLA);
+  write(ACCEL_CONFIG);
+  write(AFS_SEL_2);
+  stopI2C_Trans();
+
 
   while (1)
   {
     Serial.print(1);
     buzzerChirp();
 
-    // //x value 
-    // read_from(SLA, ACCEL_XOUT_H);
-    // x_val = read_data(); //read upper value
+    //x value 
+    read_from(SLA, ACCEL_XOUT_H);
+    x_val = read_data(); //read upper value
 
-    // read_from(SLA, ACCEL_XOUT_L);
-    // x_val = (x_val << 8) | read_data(); //shift bit to the right and put in in the lower value
+    read_from(SLA, ACCEL_XOUT_L);
+    x_val = (x_val << 8) | read_data(); //shift bit to the right and put in in the lower value
 
-    // x_accel = x_val/16384.0;
-    // //y value
-    // read_from(SLA, ACCEL_YOUT_H);
-    // y_val = read_data();
+    x_accel = x_val/16384.0;
+    //y value
+    read_from(SLA, ACCEL_YOUT_H);
+    y_val = read_data();
+    read_from(SLA, ACCEL_YOUT_L);
+    y_val = (y_val << 8) | read_data(); 
 
-    // read_from(SLA, ACCEL_YOUT_L);
-    // y_val = (y_val << 8) | read_data(); 
-
-    
-    // z value
-    // read_from(sla, ACCEL_ZOUT_H);
+       y_accel = y_val/16384.0;
+    //z value
+    read_from(SLA, ACCEL_ZOUT_H);
+    z_val = read_data();
+    read_from(SLA, ACCEL_ZOUT_L);
+    z_val = (z_val<<8)|read_data();
+    z_accel = z_val/16384.0;
+    Serial.println("testtttt");
+    Serial.print("X-Axis =  ");
+    Serial.print(x_accel);
+    Serial.print(",  Y-Axis = ");
+    Serial.print(y_accel);
+    Serial.print(",  Z-Axis = ");
+    Serial.println(z_accel);
+    Serial.println(pitch);
+    stopI2C_Trans();
 
   }
   return 0;

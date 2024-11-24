@@ -8,7 +8,7 @@
 #include <avr/io.h>
 #include "PWM.h"
 #include <Arduino.h>
-
+#include "timer.h"
 
 void initPWM()
 {
@@ -38,17 +38,22 @@ void buzzerChirp()
     //How to produce the chirping sound effect
 
     // Sweep frequency from 1000 Hz to 5000 Hz and back down
-    for (uint16_t freq = 1000; freq <= 5000; freq += 100) 
+    for (uint16_t freq = 1000; freq <= 5000; freq += 500) 
     { 
         setBuzzerFrequency(freq); // Set the buzzer frequency
-        _delay_ms(10);
+        delayMs(10);
     }
 
     // Sweep frequency from 5000 Hz to 1000 Hz
-    for (uint16_t freq = 5000; freq >= 1000; freq -= 100) 
+    for (uint16_t freq = 5000; freq >= 1000; freq -= 500) 
     {
         setBuzzerFrequency(freq); // Set the buzzer frequency
-        _delay_ms(10);
+        delayMs(10);
 
     }
+}
+void stopBuzzerSound()
+{
+    // Set the duty cycle to 0 to stop the sound (no signal to the buzzer)
+    OCR3A = 0; // Set the duty cycle to 0, effectively stopping the buzzer sound
 }
