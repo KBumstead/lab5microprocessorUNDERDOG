@@ -26,11 +26,6 @@ void setBuzzerFrequency(uint16_t frequency)
 
     ICR3 = topValue;
     OCR3A = topValue / 2;
-
-    Serial.print("Frequency: ");
-    Serial.println(frequency);
-    Serial.print("ICR3 Value: ");
-    Serial.println(ICR3);  // Print the calculated ICR3 value
 }
 
 void buzzerChirp()
