@@ -27,7 +27,6 @@ void spi_send(uint8_t data) {
 
     // Wait for transmission to complete (poll the SPIF flag)
     while (!(SPSR & (1 << SPIF)));
-
     // SPIF flag is set when transmission is complete
 }
 
@@ -60,11 +59,11 @@ void max7219_display_pattern() {
 
 void max7219_display_sad_pattern(){
     send_max7129(0x01, 0b00000000); // all LEDS in Row 1 are off
-      send_max7129(0x02, 0b01000010); // row 2 LEDS
-      send_max7129(0x03, 0b10100101); // row 3 LEDS
-      send_max7129(0x04, 0b01000010); // row 4 LEDS
-      send_max7129(0x05, 0b00000000); // row 5 LEDS
-      send_max7129(0x06, 0b10000001); // row 6 LEDS
-      send_max7129(0x07, 0b01111110); // row 7 LEDS
-      send_max7129(0x08, 0b00000000);
+    send_max7129(0x02, 0b01000010); // row 2 LEDS
+    send_max7129(0x03, 0b10100101); // row 3 LEDS
+    send_max7129(0x04, 0b01000010); // row 4 LEDS
+    send_max7129(0x05, 0b00000000); // row 5 LEDS
+    send_max7129(0x06, 0b10000001); // row 6 LEDS
+    send_max7129(0x07, 0b01111110); // row 7 LEDS
+    send_max7129(0x08, 0b00000000);
 }

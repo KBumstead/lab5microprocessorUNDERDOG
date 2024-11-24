@@ -15,10 +15,9 @@ void initI2C(){
     //21 is SCL
     PRR0 &= ~(1 << PRTWI); //by putting it to 0 we enable power to i2c
 
-    TWSR |= (1 << TWPS0); // prescaler to 4
-    TWSR &= ~(1 << TWPS1); //prescaler to 4
+    TWSR &= ~((1 << TWPS0) | (1 << TWPS1)); //prescaler to 1
 
-    TWBR = 0xC6; 
+    TWBR = 0xC6;  //set twbr to get SCL 10k
 
     TWCR |= (1 << TWINT) | (1 << TWEN); //enter MT mode tp enable 2 
 }   
@@ -33,7 +32,7 @@ void startI2C_Trans(char unsigned SLA){
     TWDR |= (SLA << 1); //TWDR is set to the slave address to enter MT mode
     TWCR |= (1 << TWINT) | (1 << TWEN); // clear twint flag, enable TWI
 
-     while (!(TWCR & (1 << TWINT))); //to wait twint high so that the data can be transmitted
+    while (!(TWCR & (1 << TWINT))); //to wait twint high so that the data can be transmitted
 }
 
 void stopI2C_Trans(){

@@ -13,8 +13,8 @@
 void initI2C();
 void startI2C_Trans(char unsigned SLA);
 void stopI2C_Trans();
-void write();
-void read_from();
+void write(unsigned char data);
+void read_from(unsigned char SLA, unsigned char MEMADDRESS);
 unsigned char read_data();
 
 #endif

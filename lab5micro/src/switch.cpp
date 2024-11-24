@@ -15,10 +15,10 @@
 /*
  * Initializes pull-up resistor on D0    and sets it into input mode
  */
-void initSwitchPDO(){
+void initSwitchPD2(){
     //pull up resistor on D0 set it into input mode
-    PORTD |= (1 << PORTD0);
-    DDRD &= ~(1 << DDD0);
+    PORTD |= (1 << PORTD2);
+    DDRD &= ~(1 << DDD2);
 
 
     //to trigger the external interrupt switch by clearing put isc01 to 1 and ics00 to 0 so that the switch can detect an input/interrupt when the 
@@ -27,5 +27,5 @@ void initSwitchPDO(){
     EICRA &= ~(1 << ISC00);
 
     //this below enables the int0 for the external intterupt int0 
-    EIMSK |= (1 << INT0);
+    EIMSK |= (1 << INT2);
 }
