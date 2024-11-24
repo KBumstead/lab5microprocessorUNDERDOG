@@ -154,6 +154,7 @@ int main()
       max7219_display_pattern();
       Serial.println("happy!!!");
       Emotion = HAPPY_FACE;
+      stopBuzzerSound();
       // write the noise here
     }
     else if (Emotion == HAPPY_TO_SAD)
@@ -161,16 +162,19 @@ int main()
       max7219_display_sad_pattern();
       Serial.println("sad:((");
       Emotion = SAD_FACE;
+      buzzerChirp();
+      
       // make function to shut the shit out that nigga
     }
 
     // state of the button
     if (MachineState == RELEASED)
     {
-      // or the noise can be in here
+      
     }
     else if (MachineState == PRESSED)
     {
+      stopBuzzerSound();
       // stfu
     }
     else if (MachineState == DB_PRESSED)
