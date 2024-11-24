@@ -16,6 +16,7 @@
 #include "spi.h"
 #include "i2c.h"
 #include "Arduino.h"
+#include "timer.h"
 
 #include <avr/interrupt.h>
 // defines
@@ -36,26 +37,26 @@
 #define TEMP_OUT_L 0x42
 
 #define WHO_AM_I 0x75
-//define state button
-// typedef enum
-// {
-//   RELEASED,
-//   DB_RELEASED,
-//   PRESSED,
-//   DB_PRESSED,
-// } machineState;
+// define state button
+typedef enum
+{
+  RELEASED,
+  DB_RELEASED,
+  PRESSED,
+  DB_PRESSED,
+} machineState;
 
-//define state
-// typedef enum
-// {
-//   HAPPY_FACE,
-//   HAPPY_TO_SAD,
-//   SAD_FACE,
-//   SAD_TO_HAPPY
-// } emotion;
+// define state
+typedef enum
+{
+  HAPPY_FACE,
+  HAPPY_TO_SAD,
+  SAD_FACE,
+  SAD_TO_HAPPY
+} emotion;
 
-// volatile machineState MachineState = RELEASED;
-// volatile emotion Emotion = HAPPY_FACE;
+volatile machineState MachineState = RELEASED;
+volatile emotion Emotion = HAPPY_FACE;
 
 
 
@@ -95,9 +96,27 @@ int main()
 
   while (1)
   {
-    Serial.print(1);
-    buzzerChirp();
+      if(MachineState == DB_PRESSED){
+      delayMs(50); //delay
+      MachineState = PRESSED; //moving the state to pressed
 
+    }
+    else if(MachineState == DB_RELEASED){
+      delayMs(50); //delay 
+      MachineState = RELEASED; //moving the state to released
+    }
+    //the state of the machine when it is pressed it will activate the sevensegment and stop the motor from moving
+    else if(MachineState == PRESSED){
+      stopBuzzerSound();
+    }
+    //this activate when the state is in released basically reading the adc value and put into the changedutycycle for the motor to move in a speed and direction
+    else if(MachineState == RELEASED){
+      buzzerChirp();
+    }
+
+    max7219_display_pattern();
+
+    Serial.print(1);
     //x value 
     read_from(SLA, ACCEL_XOUT_H);
     x_val = read_data(); //read upper value
@@ -133,14 +152,14 @@ int main()
   return 0;
 }
 
-// ISR(INT0_vect){
-//   // it checks the state of the button to if it is in a release state itll go to the debouncing pressed state
-//   if (MachineState == RELEASED){
-//      MachineState = DB_PRESSED;
-//     }
-//   else if(MachineState == PRESSED){
-//       //it checks the state of the MachineState to if it is in a pressed state itll go to the debouncing release state
-//       MachineState = DB_RELEASED;
-//     }
+ISR(INT0_vect){
+  // it checks the state of the button to if it is in a release state itll go to the debouncing pressed state
+  if (MachineState == RELEASED){
+     MachineState = DB_PRESSED;
+    }
+  else if(MachineState == PRESSED){
+      //it checks the state of the MachineState to if it is in a pressed state itll go to the debouncing release state
+      MachineState = DB_RELEASED;
+    }
 
-// }
+}
