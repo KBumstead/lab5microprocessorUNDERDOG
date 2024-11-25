@@ -10,18 +10,16 @@
 void initI2C()
 {
 
-    // DDRB |= (1 << DDB0) | (1 << DDB1) | (1 << DDB2) | (1 << DDB3);
-    DDRD |= (1 << DDD0) | (1 << DDD1);
+       DDRD |= (1 << DDD0) | (1 << DDD1);
     // 20 is SDA
     // 21 is SCL
-    PRR0 &= ~(1 << PRTWI); // by putting it to 0 we enable power to i2c
+    PRR0 &= ~(1 << PRTWI); // by putting it to 0 we enable power to i2c to nyalain 2 wire serial interface
 
-    TWSR |= (1 << TWPS0);  // prescaler power = 1
-    TWSR &= ~(1 << TWPS1); // prescaler to 1
+    TWSR &= ~((1 << TWPS0) | (1 << TWPS1)); // Set prescaler to 1
 
-    TWBR = 0xC6; // set twbr to get SCL 10k
+    TWBR = 0xC6; // to find sclk using formula
 
-    TWCR |= (1 << TWINT) | (1 << TWEN); // enter MT mode tp enable 2
+    TWCR |= (1 << TWINT) | (1 << TWEN); // enter MT mode to enable 2
 }
 
 void startI2C_Trans(char unsigned SLA)

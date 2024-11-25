@@ -1,5 +1,5 @@
 // Author: Kenjie Aaron Gozali and Rohit Jathniel Vasandani
-// Net ID: 
+// Net ID:
 // Date: 14/11/2024
 // Assignment: Lab 4
 //
@@ -8,7 +8,6 @@
 #define SPI_H
 
 #include <avr/io.h>
-
 
 void initspi();
 void spi_send(uint8_t data);

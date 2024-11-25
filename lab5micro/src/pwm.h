@@ -13,5 +13,7 @@ void initPWM();
 void buzzerChirp();
 void setBuzzerFrequency(uint16_t frequency);
 void stopBuzzerSound();
+void turnOnBuzzerPin();
+void turnOffBuzzerPin();
 
 #endif // PWM_H
