@@ -1,10 +1,8 @@
-// Author: Kenjie Aaron Gozali and Rohit Jathniel Vasandani
-// Net ID: 
-// Date: 14/11/2024
-// Assignment: Lab 4
-//
-
-// Description: Function prototypes for switch.cpp
+// #######################################################################//
+//  Author: Kenjie Aaron Gozali and Rohit Jathniel Vasandani
+//  Net ID: kenjiegozali, rohitvasandani
+//  Date: 25/11/2024
+//  Assignment: Lab 5
 //----------------------------------------------------------------------//
 
 #ifndef SWITCH_H

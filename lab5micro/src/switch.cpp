@@ -1,11 +1,8 @@
-// Author: Kenjie Aaron Gozali and Rohit Jathniel Vasandani
-// Net ID:
-// Date: 14/11/2024
-// Assignment: Lab 4
-//
-
-// Description: This file implements the initialization of an external
-// switch.
+// #######################################################################//
+//  Author: Kenjie Aaron Gozali and Rohit Jathniel Vasandani
+//  Net ID: kenjiegozali, rohitvasandani
+//  Date: 25/11/2024
+//  Assignment: Lab 5
 //----------------------------------------------------------------------//
 
 #include "switch.h"

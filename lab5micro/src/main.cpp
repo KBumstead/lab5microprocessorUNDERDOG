@@ -1,13 +1,8 @@
-// Author: Kenjie Aaron Gozali and Rohit Jathniel Vasandani
-// Net ID:
-// Date: 14/11/2024
-// Assignment: Lab 4
-//
-// Description: This file contains a programmatic overall description of the
-// program. It should never contain assignments to special function registers
-// for the exception key one-line code such as checking the state of the pin.
-//
-// Requirements:
+// #######################################################################//
+//  Author: Kenjie Aaron Gozali and Rohit Jathniel Vasandani
+//  Net ID: kenjiegozali, rohitvasandani
+//  Date: 25/11/2024
+//  Assignment: Lab 5
 //----------------------------------------------------------------------//
 
 #include <avr/io.h>

@@ -1,7 +1,9 @@
-// Author: Kenjie Aaron Gozali and Rohit Jathniel Vasandani
-// Net ID:
-// Date: 14/11/2024
-// Assignment: Lab 4
+// #######################################################################//
+//  Author: Kenjie Aaron Gozali and Rohit Jathniel Vasandani
+//  Net ID: kenjiegozali, rohitvasandani
+//  Date: 25/11/2024
+//  Assignment: Lab 5
+//----------------------------------------------------------------------//
 
 #include <avr/io.h>
 #include "i2c.h"
@@ -10,7 +12,7 @@
 void initI2C()
 {
 
-       DDRD |= (1 << DDD0) | (1 << DDD1);
+    DDRD |= (1 << DDD0) | (1 << DDD1);
     // 20 is SDA
     // 21 is SCL
     PRR0 &= ~(1 << PRTWI); // by putting it to 0 we enable power to i2c to nyalain 2 wire serial interface
