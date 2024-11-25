@@ -17,11 +17,11 @@ void initSwitchPD2()
     DDRD &= ~(1 << DDD2);
     PORTD |= (1 << PORTD2);
 
-    // to trigger the external interrupt switch by clearing put isc01 to 1 and ics00 to 0 so that the switch can detect an input/interrupt when the
-    // switch is going from high to low
-    EICRA |= (1 << ISC01);
-    EICRA &= ~(1 << ISC00);
+    // to trigger the external interrupt switch by clearing put isc21 to 1 and ics20 to 0 so that the switch can detect an input/interrupt when the
+    // switch is going from high to low falling edge basically
+    EICRA |= (1 << ISC21);
+    EICRA &= ~(1 << ISC20);
 
-    // this below enables the int0 for the external intterupt int0
+    // this below enables the int0 for the external intterupt int2 which is the one we used
     EIMSK |= (1 << INT2);
 }

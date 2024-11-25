@@ -30,9 +30,12 @@ void setBuzzerFrequency(uint16_t frequency)
 
 void buzzerChirp()
 {
-    DDRE |= (1 << PE3);
-    // How to produce the chirping sound effect
 
+    //turns the pin on when wants to chirp to make sure buzzer doesnt make a sound during idle
+    DDRE |= (1 << PE3);
+
+    // How to produce the chirping sound effect
+    
     // Sweep frequency from 1000 Hz to 5000 Hz and back down
     for (uint16_t freq = 1000; freq <= 5000; freq += 500)
     {

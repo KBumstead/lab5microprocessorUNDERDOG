@@ -33,13 +33,13 @@
 // define state button
 typedef enum
 {
-  RELEASED,
-  DB_RELEASED,
-  PRESSED,
-  DB_PRESSED,
+  RELEASED, //When button released
+  DB_RELEASED, //Debouncing for release
+  PRESSED, //When button pressed
+  DB_PRESSED, //Debouncing for release 
 } machineState;
 
-// define state of the spi
+// define state of the spi, self explanatory state
 typedef enum
 {
   HAPPY_FACE,
@@ -48,14 +48,14 @@ typedef enum
   SAD_TO_HAPPY
 } emotion;
 
-volatile machineState MachineState = RELEASED;
-volatile emotion Emotion = HAPPY_FACE;
-volatile bool buzzerChirping = false;
+volatile machineState MachineState = RELEASED; //initial value for released
+volatile emotion Emotion = HAPPY_FACE; //initial value happy
+volatile bool buzzerChirping = false; //initial no buzzer chirping
 
 int main()
 {
 
-  // init
+  // initialize
   initTimer0();
   initspi();
   initI2C();
@@ -75,6 +75,10 @@ int main()
   float z_accel = 0;
   float roll = 0;
   float pitch = 0;
+
+  float roll_buffer[BUFFER_SIZE] = {0}; // initialize buffer for roll using the buffer size from i2c.h
+  float pitch_buffer[BUFFER_SIZE] = {0}; //initialize pitch for roll using the buffer size from 12c.h
+  int buffer_index = 0; //initialize the buffer index (address of row/pitch value in buffer)
 
   startI2C_Trans(SLA); // begin i2c communication with the slave
   write(PWR_MGMT_1);   // access the power management
@@ -116,6 +120,15 @@ int main()
     roll = atan2(y_accel, sqrt(x_accel * x_accel + z_accel * z_accel)) * 180 / 3.14;         // count the roll angle which would be later for the state of emotion
     pitch = atan2(x_accel, sqrt(y_accel * y_accel + z_accel * z_accel)) * 180 / 3.14 - 0.12; // count pitch angle
 
+    // Apply moving average filter to ensure no noise triggers the accelemoreter prematurely
+    roll = updateMovingAverage(roll_buffer, buffer_index, roll);
+    pitch = updateMovingAverage(pitch_buffer, buffer_index, pitch);
+
+    // Serial.print("Filtered Roll: ");
+    // Serial.print(roll);
+    // Serial.print(", Filtered Pitch: ");
+    // Serial.println(pitch);
+
     // serial print first
     // Serial.println("testtttt");
     // Serial.print("X-Axis =  ");
@@ -137,13 +150,13 @@ int main()
         delayMs(50); // delay and once again check if it really have tilted
         if (roll > 45.0 || roll < -45.0 || pitch > 45.0 || pitch < -45.0)
         {
-          Emotion = HAPPY_TO_SAD; // change state
+          Emotion = HAPPY_TO_SAD; // change state when condition is met
         }
       }
       // below if else function for to know if the buzzer still chirping or not
       if (buzzerChirping)
       {
-        buzzerChirp(); // Continuously produce the chirping effect
+        buzzerChirp(); // Continuously produce the chirping effect through the loop in i2c
       }
     }
 
@@ -155,13 +168,13 @@ int main()
         delayMs(50);
         if (roll > -45.0 && roll < 45.0 && pitch >= -45.0 && pitch <= 45.0)
         {
-          Emotion = SAD_TO_HAPPY;
+          Emotion = SAD_TO_HAPPY; //change state when condiiton is met
         }
       }
       // to know if buzzer still chirping or not
       if (!buzzerChirping) // Start the chirping state
       {
-        buzzerChirping = true;
+        buzzerChirping = true; //sets boolean chirping as true
       }
       // if true itll still chirp
       if (buzzerChirping)
@@ -183,27 +196,26 @@ int main()
     }
 
     // state of the button
-    if (MachineState == RELEASED)
+    if (MachineState == DB_PRESSED)
     {
-    }
-    else if (MachineState == PRESSED)
-    {
-
-      buzzerChirping = false;     // change buzzer to false
-      DDRE &= ~(1 << PE3);        // make ddr register to 0
-      delayMs(50);                // delay
-      MachineState = DB_RELEASED; // move state
-    }
-    else if (MachineState == DB_PRESSED)
-    {
-      delayMs(50);            // delay
+      delayMs(50);            // delay for debouncing
       MachineState = PRESSED; // movestate
     }
     else if (MachineState == DB_RELEASED)
     {
-
-      delayMs(50);             // delay
+      delayMs(50);             // delay for debouncing
       MachineState = RELEASED; // movestate
+    }
+    else if (MachineState == PRESSED)
+    {
+      buzzerChirping = false;     // change buzzer to false
+      DDRE &= ~(1 << PE3);        // make ddr register to 0 hard code the buzzer to turn off
+      delayMs(50);                // delay for debouncing
+      MachineState = DB_RELEASED; // move state
+    }
+    else if (MachineState == RELEASED)
+    {
+      //nothing here since there is no special instructions for when the button is released and since we use falling edge we can just edit the PRESSED state
     }
   }
   return 0;

@@ -80,3 +80,17 @@ unsigned char read_data()
 
     return TWDR; // return TWDR
 }
+
+//A method to smooth out the noise in the MPU module. Basically we put the results of the pitch and roll into a buffer and we take its average instead of each value so in my case
+//every 5 roll and pitch value is averaged and that is the one checked for the state transitions
+float updateMovingAverage(float *buffer, int &index, float new_value) {
+    buffer[index] = new_value;               // Add new value to the buffer
+    index = (index + 1) % BUFFER_SIZE;       // Move to the next index (circular buffer)
+
+    // Calculate the average using a the buffer elements summed over buffer size
+    float sum = 0;
+    for (int i = 0; i < BUFFER_SIZE; i++) {
+        sum += buffer[i];
+    }
+    return sum / BUFFER_SIZE;
+}

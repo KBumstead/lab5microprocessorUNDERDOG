@@ -7,6 +7,7 @@
 
 #ifndef I2C.H
 #define I2C .H
+#define BUFFER_SIZE 5
 
 #include <avr/io.h>
 
@@ -16,5 +17,6 @@ void stopI2C_Trans();
 void write(unsigned char data);
 void read_from(unsigned char SLA, unsigned char MEMADDRESS);
 unsigned char read_data();
+float updateMovingAverage(float *buffer, int &index, float new_value);
 
 #endif
